@@ -1,38 +1,166 @@
-<html>
-    <style>
-body {
-    background-color: #333; /* Light black background */
-    color: white; /* White text color */
-    font-family: Verdana, sans-serif; /* Use Verdana font */
-    margin: 0;
-    padding: 0;
-    display: flex; /* Enables flexbox layout */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    height: 100vh; /* Take full viewport height */
-    text-align: center; /* Center the text inside elements */
-}
-
-h1 {
-    margin: 0; /* Remove margin around heading */
-}
-
-p {
-    margin-top: 10px; /* Add some space between the heading and paragraph */
-}
-    </style>
-    <head>
-        
-    <title>Tiji</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hijacked by Adam Boyant</title>
     <link rel="icon" href="https://github.com/SightDev/Octo-happiness/blob/main/favicon.png" type="image/png">
-    </head>
-        <body>
-           <h1>Tiji | A <b>truely</b> privacy focused browser</h1>
-           <p>Tiji is a open source, chromium based browser</p>
-           <p>Purely made for your privacy with features like "Some feature" and "Some feature"</p>
-           <h2>The link to the source</h2>
-           <p>https://github.com/SightDev/Tiji</p>
-        </body>
-    <footer>
-    </footer>
-<html>
+    <style>
+        /* Body styling */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black; /* Black background */
+            overflow: hidden; /* Hide scrollbars */
+            height: 100vh; /* Full viewport height */
+            display: flex; /* Flexbox for centering content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            color: white; /* White text */
+            font-family: Verdana, sans-serif; /* Verdana font */
+        }
+
+        /* Centering container for text */
+        .content {
+            text-align: center; /* Center the text */
+            z-index: 10; /* Ensure text is above the stars */
+        }
+
+        /* Stars styling */
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background-color: white;
+            width: 5px;
+            height: 5px;
+            animation: fall linear infinite, brightnessChange 1.5s ease-in-out infinite;
+        }
+
+        /* Keyframe for falling stars */
+        @keyframes fall {
+            0% {
+                top: -10px; /* Start above the screen */
+            }
+            100% {
+                top: 100vh; /* Fall to the bottom of the screen */
+            }
+        }
+
+        /* Keyframe for smooth brightness change (blinking effect) */
+        @keyframes brightnessChange {
+            0% {
+                filter: brightness(0.3); /* Start with very low brightness */
+            }
+            50% {
+                filter: brightness(1.5); /* Max brightness */
+            }
+            100% {
+                filter: brightness(0.3); /* End with low brightness */
+            }
+        }
+
+        /* Styling for the email text */
+        #email {
+            cursor: pointer; /* Make it look clickable */
+            text-decoration: underline; /* Underline to indicate it's a link */
+        }
+
+        /* Styling for the confirmation message */
+        #copyMessage {
+            margin-top: 10px;
+            color: red; /* Bright red text */
+            font-size: 14px;
+            opacity: 0; /* Start hidden */
+            display: none; /* Start off hidden */
+        }
+
+        /* Keyframe for fading in and out the confirmation message */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0; /* Start with hidden message */
+                color: red; /* Initial color red */
+            }
+            50% {
+                opacity: 1; /* Fully visible */
+                color: red; /* Bright red */
+            }
+            100% {
+                opacity: 0; /* Fade out to hidden */
+                color: red; /* Keep the color red */
+            }
+        }
+
+        /* Make the word "SYGHT" a clickable link */
+        .syght-link {
+            color: red; /* Set color to red */
+            font-weight: bold; /* Make it bold */
+            text-decoration: none; /* Remove default underline */
+            cursor: pointer; /* Make it look clickable */
+        }
+
+        .syght-link:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Tiji | A <b>truely</b> privacy focused browser</h1>
+        <p>Tiji is a open source, chromium based browser</p>
+        <p>Purely made for your privacy with features like "Some feature" and "Some feature"</p>
+        <h2>The link to the source</h2>
+        <p>Go check it out <span id="email">https://github.com/SightDev/Tiji</span></p>
+        <div id="copyMessage">The link has been copied!</div>
+    </div>
+
+    <script>
+        // Function to create random falling stars
+        function createStar() {
+            const star = document.createElement('div');
+            star.classList.add('star');
+
+            // Random horizontal position (left) within the width of the viewport
+            const startPositionX = Math.random() * window.innerWidth;
+
+            // Random animation duration between 2-5 seconds
+            const animationDuration = Math.random() * 3 + 2;
+
+            // Random delay before the animation starts
+            const delay = Math.random() * 3;
+
+            // Set the star's starting horizontal position and animation duration/delay
+            star.style.left = `${startPositionX}px`; // Random horizontal position
+            star.style.top = `-10px`; // Start above the screen at top: -10px
+            star.style.animationDuration = `${animationDuration}s`;
+            star.style.animationDelay = `${delay}s`;
+
+            // Append the star to the body
+            document.body.appendChild(star);
+
+            // Remove the star after its animation completes (to prevent too many elements in the DOM)
+            setTimeout(() => {
+                star.remove();
+            }, (animationDuration + delay) * 1000);
+        }
+
+        // Continuously create stars every 100ms (adjust as needed)
+        setInterval(createStar, 100);
+
+        // Function to copy email to clipboard
+        document.getElementById('email').addEventListener('click', function() {
+            const email = 'https://github.com/SightDev/Tiji';
+
+            // Use the Clipboard API to copy the email to the clipboard
+            navigator.clipboard.writeText(email).then(function() {
+                // Show a confirmation message with fading effect
+                const message = document.getElementById('copyMessage');
+                message.style.display = 'inline-block'; // Make it visible
+                message.style.animation = 'fadeInOut 2s ease-in-out'; // Trigger the animation
+            }).catch(function(error) {
+                console.error('Unable to copy link: ', error);
+            });
+        });
+    </script>
+</body>
+</html>
